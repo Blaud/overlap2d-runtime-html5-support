@@ -22,6 +22,7 @@ import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.uwsoft.editor.renderer.components.*;
 import com.uwsoft.editor.renderer.components.physics.PhysicsBodyComponent;
@@ -199,7 +200,15 @@ public abstract class ComponentFactory {
     protected PolygonComponent createMeshComponent(Entity entity, MainItemVO vo) {
         PolygonComponent component = new PolygonComponent();
         if(vo.shape != null) {
-            component.vertices = vo.shape.polygons.clone();
+            //component.vertices = vo.shape.polygons.clone();
+            //System.arraycopy(vo.shape.polygons, 0, component.vertices, 0, vo.shape.polygons.length);
+            component.vertices = new Vector2[vo.shape.polygons.length][];
+            for(int i=0;i<vo.shape.polygons.length;i++) {
+                component.vertices[i] = new Vector2[vo.shape.polygons[i].length];
+                for (int j = 0; j < vo.shape.polygons[i].length; j++) {
+                    component.vertices[i][j] = vo.shape.polygons[i][j];
+                }
+            }
             entity.add(component);
 
             return component;

@@ -17,6 +17,8 @@ import com.uwsoft.editor.renderer.physics.PhysicsBodyLoader;
 import com.uwsoft.editor.renderer.systems.render.logic.DrawableLogicMapper;
 import com.uwsoft.editor.renderer.utils.ComponentRetriever;
 
+import java.lang.reflect.Array;
+
 
 public class Overlap2dRenderer extends IteratingSystem {
 	private final float TIME_STEP = 1f/60;
@@ -109,11 +111,11 @@ public class Overlap2dRenderer extends IteratingSystem {
 
 	private void drawChildren(Entity rootEntity, Batch batch, CompositeTransformComponent curCompositeTransformComponent, float parentAlpha) {
 		NodeComponent nodeComponent = nodeMapper.get(rootEntity);
-		Entity[] children = nodeComponent.children.begin();
+		com.badlogic.gdx.utils.Array<Entity> children = nodeComponent.children;
 		TransformComponent transform = transformMapper.get(rootEntity);
 		if (curCompositeTransformComponent.transform || transform.rotation != 0 || transform.scaleX !=1 || transform.scaleY !=1) {
 			for (int i = 0, n = nodeComponent.children.size; i < n; i++) {
-				Entity child = children[i];
+				Entity child = children.get(i);
 
 				LayerMapComponent rootLayers = ComponentRetriever.get(rootEntity, LayerMapComponent.class);
 				ZIndexComponent childZIndexComponent = ComponentRetriever.get(child, ZIndexComponent.class);
@@ -152,7 +154,7 @@ public class Overlap2dRenderer extends IteratingSystem {
 			}
 			
 			for (int i = 0, n = nodeComponent.children.size; i < n; i++) {
-				Entity child = children[i];
+				Entity child = children.get(i);
 
 				LayerMapComponent rootLayers = ComponentRetriever.get(rootEntity, LayerMapComponent.class);
 				ZIndexComponent childZIndexComponent = ComponentRetriever.get(child, ZIndexComponent.class);
@@ -185,7 +187,6 @@ public class Overlap2dRenderer extends IteratingSystem {
 				childTransformComponent.y = cy;
 			}
 		}
-		nodeComponent.children.end();
 	}
 
 	/** Returns the transform for this group's coordinate system. 

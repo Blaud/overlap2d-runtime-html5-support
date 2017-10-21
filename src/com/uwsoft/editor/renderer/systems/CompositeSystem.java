@@ -7,6 +7,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.uwsoft.editor.renderer.components.*;
 import com.uwsoft.editor.renderer.utils.TransformMathUtils;
@@ -55,7 +56,7 @@ public class CompositeSystem extends IteratingSystem {
         float lowerY = Float.MAX_VALUE;
         float upperX = Float.MIN_VALUE;
         float upperY = Float.MIN_VALUE;
-        SnapshotArray<Entity> entities = nodeComponent.children;
+        Array<Entity> entities = nodeComponent.children;
         for (Entity entity : entities) {
             TransformComponent transformComponent = transformMapper.get(entity);
             DimensionsComponent childDimCom = dimensionsMapper.get(entity);

@@ -1,5 +1,8 @@
 package com.brashmonkey.spriter;
 
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Constructor;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -72,7 +75,10 @@ public class Spriter {
 	public static void init(Class<? extends Loader> loaderClass, Class<? extends Drawer> drawerClass){
 		Spriter.loaderClass = loaderClass;
 		try {
-			drawer = drawerClass.getDeclaredConstructor(drawerTypes).newInstance(drawerDependencies);
+
+			//ClassReflection.getDeclaredConstructor(drawerClass).newInstance(drawerDependencies);
+			//drawer = drawerClass.getDeclaredConstructor(drawerTypes).newInstance(drawerDependencies);
+			drawer =(Drawer<?>) ClassReflection.getDeclaredConstructor(drawerClass).newInstance(drawerDependencies);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -110,7 +116,8 @@ public class Spriter {
 		loadedData.put(scmlFile, data);
 		loaderDependencies[0] = data;
 		try {
-			Loader loader = loaderClass.getDeclaredConstructor(loaderTypes).newInstance(loaderDependencies);
+			//Loader loader = loaderClass.getDeclaredConstructor(loaderTypes).newInstance(loaderDependencies);
+			Loader loader = (Loader)ClassReflection.getDeclaredConstructor(loaderClass).newInstance(loaderDependencies);
 			loader.load(new File(scmlFile));
 			loaders.add(loader);
 			for(Entity entity: data.entities)
@@ -142,7 +149,10 @@ public class Spriter {
 	public static Player newPlayer(String scmlFile, int entityIndex, Class<? extends Player> playerClass){
 		if(!loadedData.containsKey(scmlFile)) throw new SpriterException("You have to load \""+scmlFile+"\" before using it!");
 		try {
-			Player player = playerClass.getDeclaredConstructor(Entity.class).newInstance(loadedData.get(scmlFile).getEntity(entityIndex));
+
+			//Player player = playerClass.getDeclaredConstructor(Entity.class).newInstance(loadedData.get(scmlFile).getEntity(entityIndex));
+
+			Player player =(Player) ClassReflection.getDeclaredConstructor(playerClass).newInstance(loadedData.get(scmlFile).getEntity(entityIndex));
 			players.add(player);
 			return player;
 		} catch (Exception e) {

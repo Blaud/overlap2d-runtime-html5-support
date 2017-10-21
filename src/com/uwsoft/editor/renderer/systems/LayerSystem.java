@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.uwsoft.editor.renderer.components.*;
 import com.uwsoft.editor.renderer.data.LayerItemVO;
@@ -40,7 +41,7 @@ public class LayerSystem extends IteratingSystem {
 		}
 	}
 	
-	private void updateLayers(SnapshotArray<Entity> children, LayerMapComponent layerMapComponent) {
+	private void updateLayers(Array<Entity> children, LayerMapComponent layerMapComponent) {
 		for (int i = 0; i < children.size; i++) {
 			Entity entity = children.get(i);
 			ZIndexComponent zindexComponent = zIndexMapper.get(entity);
@@ -62,7 +63,7 @@ public class LayerSystem extends IteratingSystem {
         }
 	}
 	
-	private void updateZindexes(SnapshotArray<Entity> children) {
+	private void updateZindexes(Array<Entity> children) {
 		for (int i = 0; i < children.size; i++) {
 			Entity entity = children.get(i);
 			ZIndexComponent zindexComponent = zIndexMapper.get(entity);
@@ -71,7 +72,7 @@ public class LayerSystem extends IteratingSystem {
         }
 	}
 
-	private void sort(SnapshotArray<Entity> children) {
+	private void sort(Array<Entity> children) {
 		children.sort(comparator);
 	}
 	

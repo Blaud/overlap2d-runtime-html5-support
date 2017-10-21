@@ -16,9 +16,7 @@ public class PhysicsActions {
     private static void initialize(Class<? extends ActionLogic> type) {
         try {
             Actions.registerActionClass(type);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+//import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Json;
 import com.uwsoft.editor.renderer.data.*;
@@ -91,6 +91,7 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
      * finally loads all the prepared assets
      */
     public void initAllResources() {
+        Gdx.app.log("O2D_runtime","start loading resources");
         loadProjectVO();
         for (int i = 0; i < projectVO.scenes.size(); i++) {
             loadSceneVO(projectVO.scenes.get(i).sceneName);
@@ -314,12 +315,12 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
     }
 
     public void loadFont(FontSizePair pair) {
-        FileHandle fontFile;
-        fontFile = Gdx.files.internal(fontsPath + File.separator + pair.fontName + ".ttf");
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = Math.round(pair.fontSize * resMultiplier);
-        BitmapFont font = generator.generateFont(parameter);
+//        FileHandle fontFile;
+//        fontFile = Gdx.files.internal(fontsPath + File.separator + pair.fontName + ".ttf");
+//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+//        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+//        parameter.size = Math.round(pair.fontSize * resMultiplier);
+        BitmapFont font = new BitmapFont();
         bitmapFonts.put(pair, font);
     }
 
@@ -343,8 +344,10 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
 
         FileHandle file = Gdx.files.internal("project.dt");
         Json json = new Json();
-        projectVO = json.fromJson(ProjectInfoVO.class, file.readString());
-
+        Gdx.app.log("O2D_runtime",ProjectInfoVO.class.getName());
+        String s = file.readString();
+        projectVO = json.fromJson(ProjectInfoVO.class, s);
+        Gdx.app.log("O2D_runtime", s);
         return projectVO;
     }
     

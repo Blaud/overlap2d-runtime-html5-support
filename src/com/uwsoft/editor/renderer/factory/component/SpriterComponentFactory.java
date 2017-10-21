@@ -37,6 +37,8 @@ import com.uwsoft.editor.renderer.utils.ComponentRetriever;
 import com.uwsoft.editor.renderer.utils.LibGdxDrawer;
 import com.uwsoft.editor.renderer.utils.LibGdxLoader;
 
+import java.io.File;
+
 /**
  * Created by azakhary on 5/22/2015.
  */
@@ -78,7 +80,9 @@ public class SpriterComponentFactory extends ComponentFactory {
         FileHandle handle 	=	rm.getSCMLFile(vo.animationName);
         component.data = new SCMLReader(handle.read()).getData();
         LibGdxLoader loader = 	new LibGdxLoader(component.data);
-        loader.load(handle.file());
+
+        File f = new File(vo.animationName);
+        loader.load(f);
 
         component.currentAnimationIndex	=	vo.animation;
         component.currentEntityIndex		=	vo.entity;

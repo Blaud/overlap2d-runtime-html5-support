@@ -3,11 +3,11 @@ package com.uwsoft.editor.renderer.systems.action;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.uwsoft.editor.renderer.components.ActionComponent;
 import com.uwsoft.editor.renderer.systems.action.data.*;
 import com.uwsoft.editor.renderer.systems.action.logic.*;
 import com.uwsoft.editor.renderer.utils.ComponentRetriever;
-
 import java.util.HashMap;
 
 /**
@@ -18,7 +18,7 @@ public class Actions {
     public static HashMap<String, ActionLogic> actionLogicMap = new HashMap<String, ActionLogic>();
     private static boolean initialized;
 
-    private static void initialize() throws InstantiationException, IllegalAccessException {
+    private static void initialize() throws Exception {
         registerActionClass(MoveToAction.class);
         registerActionClass(MoveByAction.class);
         registerActionClass(SizeToAction.class);
@@ -39,20 +39,19 @@ public class Actions {
         initialized = true;
     }
 
-    public static <T extends ActionLogic> void registerActionClass(Class<T> type) throws IllegalAccessException, InstantiationException {
+    public static <T extends ActionLogic> void registerActionClass(Class<T> type) throws Exception {
         if (!actionLogicMap.containsKey(type.getName())) {
-            actionLogicMap.put(type.getName(), type.newInstance());
+            actionLogicMap.put(type.getName(), ClassReflection.newInstance(type));
         }
     }
 
     private static void checkInit() {
         if (!initialized) try {
             initialize();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     public static ActionData moveTo(float x, float y, float duration) {
